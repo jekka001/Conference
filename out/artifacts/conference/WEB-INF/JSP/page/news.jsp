@@ -9,52 +9,13 @@
 
 <div class="row">
     <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-        <div class="post-preview">
-            <a href="/review">
-                <h2 class="post-title">
-                    Man must explore, and this is exploration at its greatest
-                </h2>
-            </a>
-            <p class="post-meta">Speaker: <a href="#">Name Speaker</a></p>
-            <p>Time conduction: on September 24, 2014.  Venue: Kiev</p>
-            <p class="post-meta">Registered: 0; Visitor:0</p>
-        </div>
+        <jsp:include page="../fragment/allSpeaking.jsp"/>
         <hr>
-        <div class="post-preview">
-            <a href="/review">
-                <h2 class="post-title">
-                    Man must explore, and this is exploration at its greatest
-                </h2>
-            </a>
-            <p class="post-meta">Speaker: <a href="#">Name Speaker</a></p>
-            <p>Time conduction: on September 24, 2014.  Venue: Kiev</p>
-            <p class="post-meta">Registered: 0; Visitor:0</p>
-        </div>
-        <hr>
-        <div class="post-preview">
-            <a href="/review">
-                <h2 class="post-title">
-                    Man must explore, and this is exploration at its greatest
-                </h2>
-            </a>
-            <p class="post-meta">Speaker: <a href="#">Name Speaker</a></p>
-            <p>Time conduction: on September 24, 2014.  Venue: Kiev</p>
-            <p class="post-meta">Registered: 0; Visitor:0</p>
-        </div>
-        <hr>
-        <div class="post-preview">
-            <a href="/review">
-                <h2 class="post-title">
-                    Man must explore, and this is exploration at its greatest
-                </h2>
-            </a>
-            <p class="post-meta">Speaker: <a href="#">Name Speaker</a></p>
-            <p>Time conduction: on September 24, 2014.  Venue: Kiev</p>
-            <p class="post-meta">Registered: 0; Visitor:0</p>
-        </div>
-        <hr>
-        <!-- Pager -->
+
         <ul class="pager">
+            <li class="previous">
+                <a href="#">&larr; New Review</a>
+            </li>
             <li class="next">
                 <a href="#">Older Review &rarr;</a>
             </li>

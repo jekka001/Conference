@@ -8,11 +8,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet("/review")
-public class ReviewController extends AbstractController {
+@WebServlet("/speaking")
+public class SpeakingController extends AbstractController {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        forwardToPage("review.jsp", req, resp);
+        forwardToPage("speaking.jsp", req, resp);
     }
 }

@@ -13,6 +13,8 @@ public class ContactController extends AbstractController {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setAttribute("currentContact", "/WEB-INF/JSP/fragment/contactForAll.jsp");
         forwardToPage("contact.jsp", req, resp);
     }
+
 }
