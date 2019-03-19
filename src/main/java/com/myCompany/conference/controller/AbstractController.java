@@ -1,5 +1,7 @@
 package com.myCompany.conference.controller;
 
+import com.myCompany.conference.service.BusinessService;
+import com.myCompany.conference.service.impl.ServiceManager;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
@@ -10,6 +12,16 @@ import java.io.IOException;
 
 public abstract class AbstractController extends HttpServlet {
     protected final Logger LOGGER = Logger.getLogger(AbstractController.class);
+    private BusinessService businessService;
+
+    public final BusinessService getBusinessService() {
+        return businessService;
+    }
+
+    @Override
+    public void init() throws ServletException {
+        businessService = ServiceManager.getInstance(getServletContext()).getBusinessService();
+    }
 
     public final void forwardToPage(String jspPage, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setAttribute("currentPage", "page/" + jspPage);
