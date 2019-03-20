@@ -6,7 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<form name="sentMessage" action="/speaking" method="post" novalidate>
+<form name="sentMessage" action="/conference" method="post" novalidate>
     <div class="row">
         <div class="form-group col-xs-12">
             <input type="hidden" placeholder="idReview">

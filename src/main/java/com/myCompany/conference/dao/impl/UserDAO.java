@@ -1,7 +1,8 @@
 package com.myCompany.conference.dao.impl;
-/*
-import com.myCompany.conferenceManagmentSystem.entity.Role;
-import com.myCompany.conferenceManagmentSystem.entity.User;
+
+
+import com.myCompany.conference.entity.Role;
+import com.myCompany.conference.entity.User;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -189,4 +190,3 @@ public class UserDAO extends AbstractDAO<User> {
     }
     private String getSelectQuery(String type){return SQL_FIND_ALL + " WHERE " + type + " = ?";}
 }
-*/

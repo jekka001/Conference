@@ -1,22 +1,32 @@
 package com.myCompany.conference.dao.impl;
-/*
-import com.myCompany.conferenceManagmentSystem.entity.Review;
+
+
+import com.myCompany.conference.dao.factory.DAOFactory;
+import com.myCompany.conference.dao.factory.impl.MySqlDAOFactory;
+import com.myCompany.conference.entity.Review;
+import com.myCompany.conference.entity.Speaker;
+import com.myCompany.conference.entity.User;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ReviewDAO extends AbstractDAO<Review> {
-    private static final String SQL_INSERT = "INSERT INTO review(id, topic, registered, visitors) " +
-            "VALUES(?, ?, ?, ?)";
+    private static final String SQL_INSERT = "INSERT INTO review(id, topic, id_speaker) " +
+            "VALUES(?, ?, ?)";
+    private static final String SQL_INSERT_REVIEW_USER = "INSERT INTO registered(id_user, id_review) VALUE(?, ?)";
     private static final String SQL_FIND_ALL = "SELECT * FROM review";
-    private static final String SQL_UPDATE = "UPDATE review SET topic = ?, registered = ?, visitors = ? " +
+    private static final String SQL_FIND_USER = "SELECT id_user FROM registered WHERE id_review = ?";
+    private static final String SQL_UPDATE = "UPDATE review SET topic = ?, registered = ?, id_speaker = ? " +
             "WHERE id = ?";
-    private static final String SQL_UPDATE_SPEAKER_ID = "UPDATE review SET speaker_id = ? " +
-            "WHERE id = ?";
-    private static final String SQL_UPDATE_SPEAKING_ID = "UPDATE review SET speaking_id = ? " +
+    private static final String SQL_UPDATE_CONFERENCE_ID = "UPDATE review SET id_conference = ? " +
             "WHERE id = ?";
     private static final String SQL_DELETE = "DELETE FROM review WHERE id = ?";
+    private static final String SQL_DELETE_USER ="DELETE FROM id_review WHERE id_user = ?";
+
+    private DAOFactory parentFactory = MySqlDAOFactory.getInstance();
+    private AbstractDAO<Speaker> speakerDAO = parentFactory.createSpeaker(connection);
+    private AbstractDAO<User> userDAO = parentFactory.createUser(connection);
 
     public ReviewDAO(Connection connection) {
         super(connection);
@@ -82,10 +92,11 @@ public class ReviewDAO extends AbstractDAO<Review> {
         try(PreparedStatement preparedStatement = connection.prepareStatement(SQL_INSERT)) {
             preparedStatement.setLong(1, object.getId());
             preparedStatement.setString(2, object.getTopic());
-            preparedStatement.setInt(3, object.getCountRegistered());
-            preparedStatement.setInt(4, object.getCountVisitors());
+            preparedStatement.setLong(3, object.getSpeaker().getId());
 
             preparedStatement.execute();
+
+            createUser(object.getRegistered(), object.getId());
 
             return true;
         } catch (SQLException e) {
@@ -98,11 +109,12 @@ public class ReviewDAO extends AbstractDAO<Review> {
     public Review update(Review object) {
         try(PreparedStatement preparedStatement = connection.prepareStatement(SQL_UPDATE)){
             preparedStatement.setString(1, object.getTopic());
-            preparedStatement.setInt(2, object.getCountRegistered());
-            preparedStatement.setInt(3, object.getCountVisitors());
-            preparedStatement.setLong(4, object.getId());
+            preparedStatement.setInt(2, object.getIntRegistered());
+            preparedStatement.setLong(3, object.getId());
 
             preparedStatement.execute();
+
+            updateUser(object.getRegistered(), object.getId());
 
             return object;
         } catch (SQLException e) {
@@ -122,6 +134,8 @@ public class ReviewDAO extends AbstractDAO<Review> {
             preparedStatement.setLong(1, id);
 
             preparedStatement.execute();
+
+            deleteUser(id);
 
             return true;
         } catch (SQLException e) {
@@ -143,29 +157,66 @@ public class ReviewDAO extends AbstractDAO<Review> {
 
         tempReview.setId(resultSet.getLong("id"));
         tempReview.setTopic(resultSet.getString("topic"));
-        tempReview.setCountRegistered(resultSet.getInt("registered"));
-        tempReview.setCountVisitors(resultSet.getInt("visitors"));
+        tempReview.setVisitors(resultSet.getInt("visitors"));
+        tempReview.setSpeaker(speakerDAO.findById(resultSet.getLong("id_speaker")));
+        tempReview.setRegistered(findUser(tempReview.getId()));
 
         return tempReview;
     }
+
     private String getSelectQuery(String type){return SQL_FIND_ALL + " WHERE " + type + " = ?";}
 
-    public boolean updateSpeakerId(Review review, long speakerId){
-        try(PreparedStatement preparedStatement = connection.prepareStatement(SQL_UPDATE_SPEAKER_ID)) {
-            preparedStatement.setLong(1, speakerId);
-            preparedStatement.setLong(2, review.getId());
+    private List<User> findUser(long idReview){
+        try(PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_USER)) {
+            preparedStatement.setLong(1, idReview);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            return parseSetForUser(resultSet);
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+    private List<User> parseSetForUser(ResultSet resultSet) throws SQLException{
+        List<User> userList = new ArrayList<>();
+
+        while(resultSet.next()){
+            userList.add(userDAO.findById(resultSet.getLong("id_user")));
+        }
+
+        return userList;
+    }
+    private void createUser(List<User> userList, long idReview){
+        for (User user : userList) {
+            createReviewUserId(idReview, user.getId());
+        }
+    }
+    private void createReviewUserId(long idReview, long idUser){
+        try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_INSERT_REVIEW_USER)) {
+            preparedStatement.setLong(1, idReview);
+            preparedStatement.setLong(2, idUser);
 
             preparedStatement.execute();
-
-            return true;
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return false;
     }
-    public boolean updateSpeakingId(Review review, long speakingId){
-        try(PreparedStatement preparedStatement = connection.prepareStatement(SQL_UPDATE_SPEAKER_ID)) {
-            preparedStatement.setLong(1, speakingId);
+    private void updateUser(List<User> userList, long idReview){
+        deleteUser(idReview);
+        createUser(userList, idReview);
+    }
+    private void deleteUser(long idReview){
+        try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_DELETE_USER)) {
+            preparedStatement.setLong(1, idReview);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public boolean updateConferenceId(Review review, long conferenceId){
+        try(PreparedStatement preparedStatement = connection.prepareStatement(SQL_UPDATE_CONFERENCE_ID)) {
+            preparedStatement.setLong(1, conferenceId);
             preparedStatement.setLong(2, review.getId());
 
             preparedStatement.execute();
@@ -177,4 +228,3 @@ public class ReviewDAO extends AbstractDAO<Review> {
         return false;
     }
 }
-*/

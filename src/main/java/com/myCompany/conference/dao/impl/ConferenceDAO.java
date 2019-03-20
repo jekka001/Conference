@@ -1,42 +1,44 @@
 package com.myCompany.conference.dao.impl;
 
-/*
+
 import com.myCompany.conference.dao.factory.DAOFactory;
 import com.myCompany.conference.dao.factory.impl.MySqlDAOFactory;
+import com.myCompany.conference.entity.Conference;
+import com.myCompany.conference.entity.Review;
+import com.myCompany.conference.exception.ApplicationException;
 
 import java.sql.*;
-import java.time.Instant;
 import java.util.ArrayList;
+import java.util.List;
 
-public class SpeakingDAO extends AbstractDAO<Speaking> {
-    private static final String SQL_INSERT = "INSERT INTO speaking(id, time_conduction, venue) " +
-            "VALUES(?, ?, ?)";
-    private static final String SQL_FIND_ALL = "SELECT * FROM speaking";
-    private static final String SQL_UPDATE = "UPDATE speaking SET time_conduction = ?, venue = ? " +
+public class ConferenceDAO extends AbstractDAO<Conference> {
+    private static final String SQL_INSERT = "INSERT INTO conference(id, title, time_conduction, venue) " +
+            "VALUES(?, ?, ?, ?)";
+    private static final String SQL_FIND_ALL = "SELECT * FROM conference";
+    private static final String SQL_UPDATE = "UPDATE conference SET title = ?, time_conduction = ?, venue = ? " +
             "WHERE id = ?";
-    private static final String SQL_DELETE = "DELETE FROM speaking WHERE id = ?";
+    private static final String SQL_DELETE = "DELETE FROM conference WHERE id = ?";
 
     private DAOFactory parentFactory = MySqlDAOFactory.getInstance();
     private AbstractDAO<Review> reviewDAO = parentFactory.createReview(connection);
 
-    public SpeakingDAO(Connection connection) {
+    public ConferenceDAO(Connection connection) {
         super(connection);
     }
 
     @Override
-    public List<Speaking> findAll() {
+    public List<Conference> findAll(){
         try (Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery(SQL_FIND_ALL);
 
             return parseSet(resultSet);
         } catch (SQLException e) {
-            e.printStackTrace();
+           throw new ApplicationException("Can't execute db command: " + e.getMessage(), e);
         }
-        return null;
     }
 
     @Override
-    public Speaking findById(long id) {
+    public Conference findById(long id) {
         if(isExistSpeaker(id)) {
             return findByLong("id", id).get(0);
         }
@@ -47,7 +49,7 @@ public class SpeakingDAO extends AbstractDAO<Speaking> {
     }
 
     @Override
-    public List<Speaking> findByString(String type, String value) {
+    public List<Conference> findByString(String type, String value) {
         String currentSql = getSelectQuery(type);
 
         try(PreparedStatement preparedStatement = connection.prepareStatement(currentSql)) {
@@ -63,7 +65,7 @@ public class SpeakingDAO extends AbstractDAO<Speaking> {
     }
 
     @Override
-    public List<Speaking> findByLong(String type, long value) {
+    public List<Conference> findByLong(String type, long value) {
         String currentSql = getSelectQuery(type);
 
         try(PreparedStatement preparedStatement = connection.prepareStatement(currentSql)) {
@@ -79,15 +81,16 @@ public class SpeakingDAO extends AbstractDAO<Speaking> {
     }
 
     @Override
-    public boolean create(Speaking object) {
+    public boolean create(Conference object) {
         try(PreparedStatement preparedStatement = connection.prepareStatement(SQL_INSERT)) {
             preparedStatement.setLong(1, object.getId());
-            preparedStatement.setLong(2, object.getTimeConduction().getEpochSecond());
-            preparedStatement.setString(3, object.getVenue());
+            preparedStatement.setString(2, object.getTitle());
+            preparedStatement.setTimestamp(3, object.getTimeConduction());
+            preparedStatement.setString(4, object.getVenue());
 
             preparedStatement.execute();
 
-            //createReview(object.getReviewList(), object.getId());
+            createReview(object.getReviewList(), object.getId());
 
             return true;
         } catch (SQLException e) {
@@ -97,15 +100,16 @@ public class SpeakingDAO extends AbstractDAO<Speaking> {
     }
 
     @Override
-    public Speaking update(Speaking object) {
+    public Conference update(Conference object) {
         try(PreparedStatement preparedStatement = connection.prepareStatement(SQL_UPDATE)){
-            preparedStatement.setLong(1, object.getTimeConduction().getEpochSecond());
-            preparedStatement.setString(2, object.getVenue());
-            preparedStatement.setLong(3, object.getId());
+            preparedStatement.setString(1, object.getTitle());
+            preparedStatement.setTimestamp(2, object.getTimeConduction());
+            preparedStatement.setString(3, object.getVenue());
+            preparedStatement.setLong(4, object.getId());
 
             preparedStatement.execute();
 
-            //updateReview(object.getReviewList(), object.getId());
+            updateReview(object.getReviewList(), object.getId());
 
             return object;
         } catch (SQLException e) {
@@ -115,7 +119,7 @@ public class SpeakingDAO extends AbstractDAO<Speaking> {
     }
 
     @Override
-    public boolean delete(Speaking object) {
+    public boolean delete(Conference object) {
         return delete(object.getId());
     }
 
@@ -135,31 +139,32 @@ public class SpeakingDAO extends AbstractDAO<Speaking> {
         return false;
     }
 
-    private List<Speaking> parseSet(ResultSet resultSet) throws SQLException {
-        List<Speaking> speakingList = new ArrayList<>();
+    private List<Conference> parseSet(ResultSet resultSet) throws SQLException {
+        List<Conference> conferenceList = new ArrayList<>();
 
         while(resultSet.next()){
-            speakingList.add(fillSpeaking(resultSet));
+            conferenceList.add(fillSpeaking(resultSet));
         }
 
-        return speakingList;
+        return conferenceList;
     }
-    private Speaking fillSpeaking(ResultSet resultSet) throws SQLException{
-        Speaking tempSpeaking = new Speaking();
+    private Conference fillSpeaking(ResultSet resultSet) throws SQLException{
+        Conference tempConference = new Conference();
 
-        tempSpeaking.setId(resultSet.getLong("id"));
-        tempSpeaking.setTimeConduction(Instant.ofEpochSecond(resultSet.getLong("time_conduction")));
-        tempSpeaking.setVenue(resultSet.getString("venue"));
-        //tempSpeaking.setReviewList(reviewDAO.findByLong("speaking_id", resultSet.getLong("id")));
+        tempConference.setId(resultSet.getLong("id"));
+        tempConference.setTitle(resultSet.getString("title"));
+        tempConference.setTimeConduction(resultSet.getTimestamp("time_conduction"));
+        tempConference.setVenue(resultSet.getString("venue"));
+        tempConference.setReviewList(reviewDAO.findByLong("id_conference", resultSet.getLong("id")));
 
-        return tempSpeaking;
+        return tempConference;
     }
     private String getSelectQuery(String type){return SQL_FIND_ALL + " WHERE " + type + " = ?";}
 
     private void createReview(List<Review> reviewList, long speakingId){
         for(Review review : reviewList) {
             reviewDAO.create(review);
-            ((ReviewDAO)reviewDAO).updateSpeakingId(review, speakingId);
+            ((ReviewDAO)reviewDAO).updateConferenceId(review, speakingId);
         }
     }
     private void updateReview(List<Review> reviewList, long speakerId){
@@ -167,11 +172,11 @@ public class SpeakingDAO extends AbstractDAO<Speaking> {
         createReview(reviewList, speakerId);
     }
     private void deleteReview(long speakingId){
-        List<Review> reviewList = reviewDAO.findByLong("speaking_id", speakingId);
+        List<Review> reviewList = reviewDAO.findByLong("id_conference", speakingId);
 
         for(Review review : reviewList){
             reviewDAO.delete(review);
         }
     }
+
 }
-*/

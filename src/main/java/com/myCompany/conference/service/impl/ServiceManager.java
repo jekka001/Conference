@@ -20,9 +20,10 @@ public class ServiceManager {
     }
 
     public ServiceManager(ServletContext context) {
-        businessService = new BusinessServiceImpl();
         LOGGER.info("ServiceManager instance created");
         connection = ConnectionPoolHolder.getInstance().getConnection();
+        businessService = new BusinessServiceImpl(this);
+
     }
 
     public static ServiceManager getInstance(ServletContext context){

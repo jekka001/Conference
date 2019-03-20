@@ -1,6 +1,11 @@
 package com.myCompany.conference.dao.factory.impl;
-/*
+
 import com.myCompany.conference.dao.factory.DAOFactory;
+import com.myCompany.conference.dao.impl.ConferenceDAO;
+import com.myCompany.conference.dao.impl.ReviewDAO;
+import com.myCompany.conference.dao.impl.SpeakerDAO;
+import com.myCompany.conference.dao.impl.UserDAO;
+import com.myCompany.conference.entity.Conference;
 
 import java.sql.Connection;
 
@@ -21,8 +26,7 @@ public class MySqlDAOFactory extends DAOFactory {
     }
 
     @Override
-    public SpeakingDAO createSpeaking(Connection connection) {
-        return new SpeakingDAO(connection);
+    public ConferenceDAO createConference(Connection connection) {
+        return new ConferenceDAO(connection);
     }
 }
-*/
