@@ -8,11 +8,20 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 public abstract class AbstractController extends HttpServlet {
     protected final Logger LOGGER = Logger.getLogger(AbstractController.class);
     private BusinessService businessService;
+    private HttpSession session;
+
+    public HttpSession getSession() {
+        return session;
+    }
+    public void setSession(HttpSession session) {
+        this.session = session;
+    }
 
     public final BusinessService getBusinessService() {
         return businessService;

@@ -37,4 +37,16 @@ public class User extends AbstractEntity<Long> {
     public void setRole(Role role) {
         this.role = role;
     }
+
+    public User() {
+    }
+
+    public User(Long id, String email, String password, String name, String surname, Role role) {
+        this.setId(id);
+        this.email = email;
+        this.password = password;
+        this.name = name;
+        this.surname = surname;
+        this.role = role;
+    }
 }

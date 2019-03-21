@@ -6,6 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" trimDirectiveWhitespaces="true" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -47,7 +48,14 @@
             </button>
             <a class="navbar-brand" href="/news">Start Conference</a>
         </div>
-        <jsp:include page="fragment/navigation.jsp"/>
+        <c:choose>
+            <c:when test="${user != null}">
+                <jsp:include page="/WEB-INF/JSP/fragment/userNavigation.jsp"/>
+            </c:when>
+            <c:otherwise>
+                <jsp:include page="/WEB-INF/JSP/fragment/navigation.jsp"/>
+            </c:otherwise>
+        </c:choose>
     </div>
     <!-- /.container -->
 </nav>

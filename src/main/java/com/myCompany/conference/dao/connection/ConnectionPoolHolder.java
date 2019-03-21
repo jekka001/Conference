@@ -48,7 +48,7 @@ public class ConnectionPoolHolder {
     private void initialization() {
         ResourceBundle resourceBundle = ResourceBundle.getBundle("dataBase");
         BasicDataSource basicDataSource = new BasicDataSource();
-        basicDataSource.setDefaultAutoCommit(false);
+        //basicDataSource.setDefaultAutoCommit(false);
         basicDataSource.setUrl(resourceBundle.getString("url"));
         basicDataSource.setUsername(resourceBundle.getString("user"));
         basicDataSource.setPassword(resourceBundle.getString("pass"));
