@@ -7,7 +7,6 @@ import org.apache.log4j.Logger;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
-import java.util.List;
 
 @WebListener
 public class ApplicationListener implements ServletContextListener {
@@ -16,8 +15,6 @@ public class ApplicationListener implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent sce) {
         ServiceManager serviceManager = ServiceManager.getInstance(sce.getServletContext());
-        List<Conference> list = serviceManager.getBusinessService().listConference();
-        sce.getServletContext().setAttribute("conference", list);
         LOGGER.info("Application started");
     }
 

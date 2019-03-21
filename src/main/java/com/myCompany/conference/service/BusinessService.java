@@ -1,10 +1,9 @@
 package com.myCompany.conference.service;
 
 import com.myCompany.conference.entity.Conference;
-
-import java.util.List;
+import com.myCompany.conference.model.Items;
 
 public interface BusinessService {
 
-    List<Conference> listConference();
+    Items<Conference> listConference(int offset, int limit);
 }

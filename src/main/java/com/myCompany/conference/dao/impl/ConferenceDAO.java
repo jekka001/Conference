@@ -15,6 +15,7 @@ public class ConferenceDAO extends AbstractDAO<Conference> {
     private static final String SQL_INSERT = "INSERT INTO conference(id, title, time_conduction, venue) " +
             "VALUES(?, ?, ?, ?)";
     private static final String SQL_FIND_ALL = "SELECT * FROM conference";
+    private static final String SQL_FIND_LIMIT_CONFERENCE = "SELECT * FROM conference order by time_conduction DESC limit ? offset ?";
     private static final String SQL_UPDATE = "UPDATE conference SET title = ?, time_conduction = ?, venue = ? " +
             "WHERE id = ?";
     private static final String SQL_DELETE = "DELETE FROM conference WHERE id = ?";
@@ -179,4 +180,20 @@ public class ConferenceDAO extends AbstractDAO<Conference> {
         }
     }
 
+    public List<Conference> findWithLimit(int offset, long limit){
+       try(PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_LIMIT_CONFERENCE)) {
+            preparedStatement.setLong(1, limit);
+            preparedStatement.setInt(2, offset);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            return parseSet(resultSet);
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public int countConference(){
+        return findAll().size();
+    }
 }

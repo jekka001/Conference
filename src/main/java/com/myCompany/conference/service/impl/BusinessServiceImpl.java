@@ -3,7 +3,9 @@ package com.myCompany.conference.service.impl;
 import com.myCompany.conference.dao.factory.DAOFactory;
 import com.myCompany.conference.dao.factory.impl.MySqlDAOFactory;
 import com.myCompany.conference.dao.impl.AbstractDAO;
+import com.myCompany.conference.dao.impl.ConferenceDAO;
 import com.myCompany.conference.entity.Conference;
+import com.myCompany.conference.model.Items;
 import com.myCompany.conference.service.BusinessService;
 
 import java.sql.Connection;
@@ -20,7 +22,10 @@ class BusinessServiceImpl implements BusinessService {
     }
 
     @Override
-    public List<Conference> listConference(){
-        return conference.findAll();
+    public Items<Conference> listConference(int offset, int limit) {
+        Items<Conference> items = new Items<>();
+        items.setItems(((ConferenceDAO)conference).findWithLimit(offset, limit));
+        items.setCount(((ConferenceDAO)conference).countConference());
+        return items;
     }
 }

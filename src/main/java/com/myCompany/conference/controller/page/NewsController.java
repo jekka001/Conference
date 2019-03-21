@@ -1,6 +1,9 @@
 package com.myCompany.conference.controller.page;
 
+import com.myCompany.conference.Constants;
 import com.myCompany.conference.controller.AbstractController;
+import com.myCompany.conference.entity.Conference;
+import com.myCompany.conference.model.Items;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,6 +16,9 @@ public class NewsController extends AbstractController {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        Items<Conference> items = null;
+        items = getBusinessService().listConference(0, Constants.LIMIT_CONFERENCE_PER_PAGE);
+        req.setAttribute("list", items);
         forwardToPage("news.jsp", req, resp);
     }
 }
