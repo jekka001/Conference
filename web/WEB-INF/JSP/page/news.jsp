@@ -12,7 +12,14 @@
 
 <div class="row">
     <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-        <jsp:include page="../fragment/allConference.jsp"/>
+        <c:choose>
+            <c:when test="${currentRole == 'Moderator'}">
+                <jsp:include page="/WEB-INF/JSP/fragment/allConference/allConferenceForModerator.jsp"/>
+            </c:when>
+            <c:otherwise>
+                <jsp:include page="/WEB-INF/JSP/fragment/allConference/allConference.jsp"/>
+            </c:otherwise>
+        </c:choose>
         <tags:pagination pagination="${pagination}"/>
 
     </div>

@@ -6,4 +6,4 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<input type="radio" name="role" value="rad4"> Користувач <Br>
+<input type="radio" name="role" value="User" checked> Користувач <Br>

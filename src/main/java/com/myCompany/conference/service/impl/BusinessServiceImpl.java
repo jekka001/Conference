@@ -7,6 +7,7 @@ import com.myCompany.conference.dao.impl.ConferenceDAO;
 import com.myCompany.conference.dao.impl.UserDAO;
 import com.myCompany.conference.entity.Conference;
 import com.myCompany.conference.entity.Role;
+import com.myCompany.conference.entity.Speaker;
 import com.myCompany.conference.entity.User;
 import com.myCompany.conference.exception.ApplicationException;
 import com.myCompany.conference.model.Items;
@@ -60,5 +61,13 @@ class BusinessServiceImpl implements BusinessService {
         user.create(newUser);
         ((UserDAO) user).updateSalt(salt, userId);
         return newUser;
+    }
+
+    @Override
+    public Speaker getSpeakerDate(User user) {
+        long rating = ((UserDAO)this.user).findByRating(user.getId());
+        long bonus = ((UserDAO)this.user).findByBonus(user.getId());
+        Speaker speaker = new Speaker(user, rating, bonus);
+        return speaker;
     }
 }

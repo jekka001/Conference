@@ -20,12 +20,11 @@ public class SignInController extends AbstractController {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
         String login = req.getParameter("login");
         String password = req.getParameter("password");
         User user = getBusinessService().signIn(login, password);
         setSession(req.getSession());
         getSession().setAttribute("user", user);
-        forwardToPage("role.jsp", req, resp);
+        resp.sendRedirect("/role");
     }
 }

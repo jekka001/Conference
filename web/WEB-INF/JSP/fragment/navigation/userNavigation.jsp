@@ -19,6 +19,9 @@
             <a href="/news">Home</a>
         </li>
         <li>
+            <a href="/role">Choose Role</a>
+        </li>
+        <li>
             <a href="/about">About</a>
         </li>
         <li>

@@ -16,4 +16,13 @@ public class Speaker extends User{
     public void setBonus(long bonus) {
         this.bonus = bonus;
     }
+
+    public Speaker() {
+    }
+
+    public Speaker(User user, long rating, long bonus) {
+        super(user.getId(),user.getEmail(), user.getPassword(), user.getName(), user.getSurname(), Role.Speaker);
+        this.rating = rating;
+        this.bonus = bonus;
+    }
 }

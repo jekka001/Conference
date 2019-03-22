@@ -6,6 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" trimDirectiveWhitespaces="true" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <div class="row">
     <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
         <p>
@@ -18,8 +19,14 @@
         <!-- NOTE: To use the contact form, your site must be on a live web host with PHP! The form will not work locally! -->
 
         <form name="sentMessage" id="contactForm" action="/contact" method="post" novalidate>
-
-            <jsp:include page="${currentContact}" />
+            <c:choose>
+                <c:when test="${currentRole != null}">
+                    <jsp:include page="/WEB-INF/JSP/fragment/contact/contactForRegisteredUser.jsp"/>
+                </c:when>
+                <c:otherwise>
+                    <jsp:include page="/WEB-INF/JSP/fragment/contact/contactForAll.jsp"/>
+                </c:otherwise>
+            </c:choose>
 
             <br>
             <div id="success"></div>

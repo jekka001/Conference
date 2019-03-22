@@ -49,11 +49,14 @@
             <a class="navbar-brand" href="/news">Start Conference</a>
         </div>
         <c:choose>
-            <c:when test="${user != null}">
-                <jsp:include page="/WEB-INF/JSP/fragment/userNavigation.jsp"/>
+            <c:when test="${currentRole == 'Speaker'}">
+                <jsp:include page="/WEB-INF/JSP/fragment/navigation/speakerNavigation.jsp"/>
+            </c:when>
+            <c:when test="${currentRole != null}">
+                <jsp:include page="/WEB-INF/JSP/fragment/navigation/userNavigation.jsp"/>
             </c:when>
             <c:otherwise>
-                <jsp:include page="/WEB-INF/JSP/fragment/navigation.jsp"/>
+                <jsp:include page="/WEB-INF/JSP/fragment/navigation/navigation.jsp"/>
             </c:otherwise>
         </c:choose>
     </div>

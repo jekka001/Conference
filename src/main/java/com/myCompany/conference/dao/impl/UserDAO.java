@@ -12,8 +12,11 @@ public class UserDAO extends AbstractDAO<User> {
     private static final String SQL_INSERT = "INSERT INTO user(id, email, password, name, surname, role) " +
             "VALUES(?, ?, ?, ?, ?, ?)";
     private static final String SQL_FIND_ALL = "SELECT * FROM user";
+    private static final String SQL_FIND_RATING = "SELECT rating FROM user WHERE id = ?";
+    private static final String SQL_FIND_BONUS = "SELECT bonus FROM user WHERE id = ?";
     private static final String SQL_UPDATE = "UPDATE user SET email = ?, password = ?, name = ?, " +
             "surname = ?, role = ? WHERE id = ?";
+    private static final String SQL_UPDATE_RATING_AND_BONUS = "UPDATE user SET rating = ?, bonus = ? WHERE id = ?";
     private static final String SQL_UPDATE_SALT = "UPDATE user SET salt = ? WHERE id = ?";
     private static final String SQL_DELETE = "DELETE FROM user WHERE id = ?";
 
@@ -189,4 +192,44 @@ public class UserDAO extends AbstractDAO<User> {
         return tempUser;
     }
     private String getSelectQuery(String type){return SQL_FIND_ALL + " WHERE " + type + " = ?";}
+
+    public Long findByRating(long idSpeaker) {
+        try(PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_RATING)) {
+            preparedStatement.setLong(1, idSpeaker);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+            return resultSet.getLong(1);
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public Long findByBonus(long idSpeaker) {
+        try(PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_BONUS)) {
+            preparedStatement.setLong(1, idSpeaker);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+            return resultSet.getLong(1);
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public boolean updateRatingAndBonus(long idSpeaker, long rating, long bonus){
+        try(PreparedStatement preparedStatement = connection.prepareStatement(SQL_UPDATE_RATING_AND_BONUS)){
+            preparedStatement.setLong(1, rating);
+            preparedStatement.setLong(2, bonus);
+            preparedStatement.setLong(3, idSpeaker);
+
+            preparedStatement.execute();
+
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
 }
