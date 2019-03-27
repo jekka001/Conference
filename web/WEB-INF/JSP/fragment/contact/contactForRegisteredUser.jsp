@@ -8,6 +8,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div class="row control-group">
     <div class="form-group col-xs-12 floating-label-form-group controls">
+        <input type="hidden" name="name" value="${user.name}">
+        <input type="hidden" name="email" value="${user.email}">
         <label>Phone Number</label>
         <input type="tel" class="form-control" placeholder="Phone Number" name="phone" required data-validation-required-message="Please enter your phone number.">
         <p class="help-block text-danger"></p>

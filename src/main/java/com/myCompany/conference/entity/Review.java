@@ -7,6 +7,7 @@ public class Review extends AbstractEntity<Long> {
     private List<User> registered;
     private int visitors;
     private Speaker speaker;
+    private StateReview state;
 
     public String getTopic() {
         return topic;
@@ -34,5 +35,23 @@ public class Review extends AbstractEntity<Long> {
     }
     public void setSpeaker(Speaker speaker) {
         this.speaker = speaker;
+    }
+    public StateReview getState() {
+        return state;
+    }
+    public void setState(StateReview state) {
+        this.state = state;
+    }
+
+    public Review() {
+    }
+
+    public Review(Long id, String topic, List<User> registered, int visitors, Speaker speaker, StateReview state) {
+        setId(id);
+        this.topic = topic;
+        this.registered = registered;
+        this.visitors = visitors;
+        this.speaker = speaker;
+        this.state = state;
     }
 }

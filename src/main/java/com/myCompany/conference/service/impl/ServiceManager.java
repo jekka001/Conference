@@ -2,8 +2,10 @@ package com.myCompany.conference.service.impl;
 
 import com.myCompany.conference.dao.connection.ConnectionPoolHolder;
 import com.myCompany.conference.service.BusinessService;
+import com.myCompany.conference.service.EncryptionService;
+import com.myCompany.conference.service.I18nService;
+import com.myCompany.conference.service.NotificationService;
 import org.apache.log4j.Logger;
-import org.omg.IOP.ServiceContext;
 
 import javax.servlet.ServletContext;
 import java.sql.Connection;
@@ -14,16 +16,21 @@ public class ServiceManager {
     private static final Logger LOGGER = Logger.getLogger(ServiceManager.class);
     final BusinessService businessService;
     final Connection connection;
+    final NotificationService notificationService;
+    final EncryptionService encryptionService;
+    final I18nService i18nService;
 
     public BusinessService getBusinessService()  {
         return businessService;
     }
 
-    public ServiceManager(ServletContext context) {
-        LOGGER.info("ServiceManager instance created");
+    private ServiceManager(ServletContext context) {
         connection = ConnectionPoolHolder.getInstance().getConnection();
+        notificationService = new EmailNotificationService();
+        encryptionService = EncryptionServiceImpl.instance;
+        i18nService = new I18nServiceImpl();
         businessService = new BusinessServiceImpl(this);
-
+        LOGGER.info("ServiceManager instance created");
     }
 
     public static ServiceManager getInstance(ServletContext context){

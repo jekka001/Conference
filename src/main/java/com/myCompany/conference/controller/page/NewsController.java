@@ -19,7 +19,7 @@ public class NewsController extends AbstractController {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         int offset = getOffset(req, Constants.LIMIT_CONFERENCE_PER_PAGE);
         String requestUrl = req.getRequestURI();
-        Items<Conference> items = null;
+        Items<Conference> items;
         items = getBusinessService().listConference(offset, Constants.LIMIT_CONFERENCE_PER_PAGE);
         req.setAttribute("list", items.getItems());
         Pagination pagination = new Pagination.Builder(requestUrl + "?", offset, items.getCount()).withLimit(Constants.LIMIT_CONFERENCE_PER_PAGE).build();

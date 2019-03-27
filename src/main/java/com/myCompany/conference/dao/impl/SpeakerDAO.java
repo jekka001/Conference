@@ -4,6 +4,7 @@ import com.myCompany.conference.dao.factory.DAOFactory;
 import com.myCompany.conference.dao.factory.impl.MySqlDAOFactory;
 import com.myCompany.conference.entity.Review;
 import com.myCompany.conference.entity.Speaker;
+import com.myCompany.conference.entity.User;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -17,6 +18,8 @@ public class SpeakerDAO extends AbstractDAO<Speaker> {
             "WHERE id = ?";
     private static final String SQL_DELETE = "DELETE FROM user WHERE id = ?";
 
+    private DAOFactory parentFactory = MySqlDAOFactory.getInstance();
+    private AbstractDAO<User> userDAO = parentFactory.createUser(connection);
 
     public SpeakerDAO(Connection connection) {
         super(connection);
@@ -138,8 +141,7 @@ public class SpeakerDAO extends AbstractDAO<Speaker> {
         return speakerList;
     }
     private Speaker fillSpeaker(ResultSet resultSet) throws SQLException{
-        Speaker tempSpeaker = new Speaker();
-
+        Speaker tempSpeaker = new Speaker(userDAO.findById(resultSet.getLong("id")),0,0);
         tempSpeaker.setId(resultSet.getLong("id"));
         tempSpeaker.setRating(resultSet.getLong("rating"));
         tempSpeaker.setBonus(resultSet.getLong("bonus"));

@@ -8,16 +8,15 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <jsp:include page="review.jsp"/>
 
-<form name="sentReview" action="/conference" method="post" novalidate>
+<form name="sentReview" action="/review" method="post" style="${(timeOver) ? 'display:none;' : ''}" novalidate>
     <div class="row">
         <div class="form-group col-xs-12">
-            <input type="hidden" placeholder="idReview">
             <div class="row control-group">
                 <div class="form-group col-xs-12 floating-label-form-group controls">
-                    <input type="text" class="form-control" placeholder="My Topic">
+                    <input type="text" class="form-control" placeholder="My Topic" name="topic">
                 </div>
             </div>
-            <button type="submit" name = "sandReview" class="btn btn-default">Send</button>
+            <button type="submit" class="btn btn-default">Send</button>
         </div>
     </div>
 </form>

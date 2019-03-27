@@ -1,11 +1,11 @@
 package com.myCompany.conference.service.impl;
 
-import com.myCompany.conference.service.Encryption;
+import com.myCompany.conference.service.EncryptionService;
 import org.jasypt.util.password.BasicPasswordEncryptor;
 
 import java.security.SecureRandom;
 
-public class EncryptionServiceImpl implements Encryption {
+public class EncryptionServiceImpl implements EncryptionService {
     public static EncryptionServiceImpl instance = new EncryptionServiceImpl();
     private SecureRandom secureRandom = new SecureRandom();
     private BasicPasswordEncryptor basicPasswordEncryptor = new BasicPasswordEncryptor();

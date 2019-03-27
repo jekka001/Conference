@@ -1,0 +1,10 @@
+INSERT INTO user(id, email, password, name, surname, role, salt, bonus, rating) VALUES(0, "test@gmail.com", "123123124","Vitia","Ivanov","Speaker","1111","10","100");
+INSERT INTO user(id, email, password, name, surname, role, salt, bonus, rating) VALUES(1, "test1@gmail.com", "123123124","Vasia","Smirnov","Speaker","1111","20","200");
+INSERT INTO user(id, email, password, name, surname, role, salt, bonus, rating) VALUES(2, "test2@gmail.com", "123123124","Katia","Popova","Speaker","1111","30","300");
+INSERT INTO user(id, email, password, name, surname, role, salt, bonus, rating) VALUES(3, "test3@gmail.com", "123123124","Ira","Novikova","Speaker","1111","40","400");
+INSERT INTO user(id, email, password, name, surname, role, salt, bonus, rating) VALUES(4, "test4@gmail.com", "123123124","Tolia","Golubev","Speaker","1111","50","500");
+INSERT INTO user(id, email, password, name, surname, role, salt, bonus, rating) VALUES(5, "test5@gmail.com", "123123124","Katia","Bogdanov","Speaker","1111","40","400");
+INSERT INTO user(id, email, password, name, surname, role, salt, bonus, rating) VALUES(6, "test6@gmail.com", "123123124","Mariana","Karlova","Speaker","1111","30","300");
+INSERT INTO user(id, email, password, name, surname, role, salt, bonus, rating) VALUES(7, "test7@gmail.com", "123123124","Dima","Noskov","Speaker","1111","20","200");
+INSERT INTO user(id, email, password, name, surname, role, salt, bonus, rating) VALUES(8, "test8@gmail.com", "123123124","Maxim","Isaev","Speaker","1111","10","100");
+INSERT INTO user(id, email, password, name, surname, role, salt, bonus, rating) VALUES(9, "test9@gmail.com", "123123124","Roma","Sazonov","Speaker","1111","10","100");

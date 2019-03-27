@@ -16,10 +16,10 @@
             <a href="/logOut">Log out</a>
         </li>
         <li>
-            <a href="/news">Home</a>
+            <a href="/role">Choose Role</a>
         </li>
         <li>
-            <a href="/role">Choose Role</a>
+            <a href="/news">Home</a>
         </li>
         <li>
             <a href="/about">About</a>

@@ -9,6 +9,11 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <div class="row">
     <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <c:if test="${success}">
+            <p>
+                You request sent! Thank you for your message
+            </p>
+        </c:if>
         <p>
             Want to get in touch with me? Fill out the form below to send me a message and
             I will try to get back to you within 24 hours!
@@ -18,7 +23,7 @@
         <!-- WARNING: Some web hosts do not allow emails to be sent through forms to common mail hosts like Gmail or Yahoo. It's recommended that you use a private domain email address! -->
         <!-- NOTE: To use the contact form, your site must be on a live web host with PHP! The form will not work locally! -->
 
-        <form name="sentMessage" id="contactForm" action="/contact" method="post" novalidate>
+        <form name="sentMessage" action="/contact" method="post" >
             <c:choose>
                 <c:when test="${currentRole != null}">
                     <jsp:include page="/WEB-INF/JSP/fragment/contact/contactForRegisteredUser.jsp"/>

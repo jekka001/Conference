@@ -1,7 +1,9 @@
 package com.myCompany.conference.controller;
 
+import com.myCompany.conference.form.AbstractForm;
 import com.myCompany.conference.service.BusinessService;
 import com.myCompany.conference.service.impl.ServiceManager;
+import org.apache.commons.beanutils.BeanUtils;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
@@ -10,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 
 public abstract class AbstractController extends HttpServlet {
     protected final Logger LOGGER = Logger.getLogger(AbstractController.class);
@@ -47,6 +50,18 @@ public abstract class AbstractController extends HttpServlet {
     }
 
     public final void forwardToFragment(String jspPage, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("/WEB-INF/JSP/fragment/"+jspPage).forward(req, resp);
+        req.getRequestDispatcher("/WEB-INF/JSP/fragment/" + jspPage).forward(req, resp);
     }
+
+    public final <T extends AbstractForm> T createForm(HttpServletRequest req, Class<T> formClass) throws ServletException{
+        try{
+            T form = formClass.newInstance();
+            form.setLocale(req.getLocale());
+            BeanUtils.populate(form, req.getParameterMap());
+            return form;
+        }catch (InstantiationException | IllegalAccessException | InvocationTargetException e){
+            throw new ServletException(e);
+        }
+    }
+
 }

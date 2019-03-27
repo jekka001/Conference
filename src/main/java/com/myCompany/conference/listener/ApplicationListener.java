@@ -14,7 +14,7 @@ public class ApplicationListener implements ServletContextListener {
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-        ServiceManager serviceManager = ServiceManager.getInstance(sce.getServletContext());
+        ServiceManager.getInstance(sce.getServletContext());
         LOGGER.info("Application started");
     }
 

@@ -48,7 +48,7 @@
             <div class="row control-group">
                 <div class="form-group col-xs-12 floating-label-form-group controls">
                     <label>Repeat Password</label>
-                    <input type="password" class="form-control" placeholder="Repeat Password" name="repeat_password" required data-validation-required-message="Please enter your password.">
+                    <input type="password" class="form-control" placeholder="Repeat Password" name="repeatPassword" required data-validation-required-message="Please enter your password.">
                     <p class="help-block text-danger"></p>
                 </div>
             </div>

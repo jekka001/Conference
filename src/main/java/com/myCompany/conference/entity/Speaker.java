@@ -25,4 +25,10 @@ public class Speaker extends User{
         this.rating = rating;
         this.bonus = bonus;
     }
+
+    public Speaker(Long id, String email, String password, String name, String surname, Role role, long rating, long bonus) {
+        super(id, email, password, name, surname, role);
+        this.rating = rating;
+        this.bonus = bonus;
+    }
 }

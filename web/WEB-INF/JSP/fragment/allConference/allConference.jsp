@@ -10,16 +10,15 @@
 
 <c:forEach var="conference_list" items="${list}">
 <div class="post-preview">
-        <a href="/conference">
-        <h2 class="post-title">
-            ${conference_list.title}
-        </h2>
-    </a>
+    <form name="sentConference" action="/conference" method="get" novalidate>
+        <button type="submit" name="title" class="btn-link" value="${conference_list.title}">${conference_list.title}</button>
+        <input type="hidden" class="form-control" value="${conference_list.id}" name = "idConference" >
+        <input type="hidden" class="form-control" value="${conference_list.timeConduction}" name = "timeConduction" >
+    </form>
         <div class="row">
             <div class="form-group col-xs-12">
-                <input type="hidden" class="form-control" placeholder="${conference_list.id}" >
-                <input type="text" class="form-control" placeholder="Time conduction: ${conference_list.timeConduction}" readonly> <Br>
-                <input type="text" class="form-control" placeholder="Venue: ${conference_list.venue}" readonly>
+                <input type="text" class="form-control" placeholder="Time conduction: " value="${conference_list.timeConduction}" name = "timeConduction" readonly> <Br>
+                <input type="text" class="form-control" placeholder="Venue: " value="${conference_list.venue}" name="venue" readonly>
             </div>
         </div>
 </div>

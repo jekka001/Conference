@@ -10,20 +10,20 @@
 
 <c:forEach var="conference_list" items="${list}">
     <div class="post-preview">
-        <a href="/conference">
-            <h2 class="post-title">
-                    ${conference_list.title}
-            </h2>
-        </a>
+        <form name="sentConference" action="/conference" method="get" novalidate>
+            <button type="submit" name="title" class="btn-link" value="${conference_list.title}">${conference_list.title}</button>
+            <input type="hidden" class="form-control" value="${conference_list.id}" name = "idConference" >
+            <input type="hidden" class="form-control" value="${conference_list.timeConduction}" name = "timeConduction" >
+        </form>
         <form name="sentConference" action="/conference" method="post" novalidate>
             <div class="row">
                 <div class="form-group col-xs-12">
-                    <input type="hidden" class="form-control" placeholder="${conference_list.id}" >
-                    <input type="text" class="form-control" placeholder="Time conduction: ${conference_list.timeConduction}" > <Br>
-                    <input type="text" class="form-control" placeholder="Venue: ${conference_list.venue}" ><Br>
+                    <input type="text" class="form-control" placeholder="Time conduction: " value="${conference_list.timeConduction}" name = "timeConduction"> <Br>
+                    <input type="text" class="form-control" placeholder="Venue: " value="${conference_list.venue}" name="venue">
+                    <input type="hidden" name="idConference" value="${conference_list.id}">
                     <div class="row">
                         <div class="form-group col-xs-12">
-                            <button type="submit" name="Save" class="btn btn-default">Save</button>
+                            <button type="submit"  class="btn btn-default">Save</button>
                         </div>
                     </div>
                 </div>

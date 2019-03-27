@@ -86,7 +86,7 @@ public class ConferenceDAO extends AbstractDAO<Conference> {
         try(PreparedStatement preparedStatement = connection.prepareStatement(SQL_INSERT)) {
             preparedStatement.setLong(1, object.getId());
             preparedStatement.setString(2, object.getTitle());
-            preparedStatement.setTimestamp(3, object.getTimeConduction());
+            preparedStatement.setLong(3, object.getTimeConduction().getTime());
             preparedStatement.setString(4, object.getVenue());
 
             preparedStatement.execute();

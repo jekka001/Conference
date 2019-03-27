@@ -17,9 +17,7 @@ public class ErrorHandlerFilter extends AbstractFilter{
         } catch (Throwable th){
             String requestUrl = req.getRequestURI();
             LOGGER.error("Error during processing the request: " + requestUrl, th);
-            if(requestUrl.startsWith("/ajax/")){
-                resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            } else if(!requestUrl.startsWith("/error")){
+            if(!requestUrl.startsWith("/error")){
                 resp.sendRedirect("/error");
             } else{
                 throw new ServletException(th);

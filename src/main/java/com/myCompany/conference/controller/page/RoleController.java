@@ -20,13 +20,20 @@ public class RoleController extends AbstractController {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String requestUrl = req.getRequestURI();
         String role = req.getParameter("role");
         setSession(req.getSession());
 
         if(getSession().getAttribute("user") != null) {
             if(role.equals("Speaker")){
                 Speaker speaker = getBusinessService().getSpeakerDate((User)getSession().getAttribute("user"));
+                if(speaker == null){
+                    resp.sendRedirect("/404?url= speaker");
+                    return;
+                }
                 getSession().setAttribute("speaker", speaker);
+            }else{
+                getSession().setAttribute("speaker", null);
             }
             getSession().setAttribute("currentRole", role);
             resp.sendRedirect("/news");
